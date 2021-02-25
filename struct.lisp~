@@ -1,0 +1,12 @@
+;;; Checking Structure Mutability
+
+(defstruct st
+  (num 0 :type fixnum))
+
+(defparameter stt (make-st))
+
+(defun change-struct (s newval)
+  (setf (st-num s) newval))
+
+(defun print-st (s)
+  (format t "The num in struct is ~a~%" (st-num s)))

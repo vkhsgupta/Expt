@@ -1,0 +1,17 @@
+(ql:quickload "bordeaux-threads")
+
+
+(defun make-channel ()
+  (let* ((list nil)
+	 (lock (bt:make-lock)))
+    (flet ((read-channel ()
+	     (loop while (null list)
+		   do (sleep 1))
+	     (bt:with-lock-held (lock)
+	       (pop list)))
+	   (write-channel (value)
+	     (bt:with-lock-held (lock)
+	       (setf list (list value)))))
+      (list #'read-channel #'write-channel))))
+
+	   
